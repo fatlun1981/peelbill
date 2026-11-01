@@ -1,0 +1,48 @@
+@startuml
+
+class Person {
+  +String id
+  +String name
+  +String? email
+  +String? avatarUrl
+}
+
+class Item {
+  +String id
+  +String name
+  +double amount
+  +String payerId
+  +List<String> participantIds
+  +String? notes
+  +double get sharePerPerson()
+}
+
+class Bill {
+  +String id
+  +String activityId
+  +String title
+  +String createdById
+  +DateTime date
+  +List<Item> items
+  +List<String> participantIds
+  +String? notes
+  +double get totalAmount()
+  +Map<String,double> calculateShares()
+}
+
+class Activity {
+  +String id
+  +String title
+  +String? description
+  +DateTime date
+  +List<String> participantIds
+  +List<String> billIds
+}
+
+Activity "1" -- "0..*" Bill : contains
+Bill "1" -- "0..*" Item : includes
+Bill "*" -- "0..*" Person : participants
+Item "1" -- "1" Person : paid by
+Item "*" -- "*" Person : shared by
+
+@enduml
